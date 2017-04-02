@@ -3,7 +3,6 @@ import json, os, re
 
 def select_dialogs():
     fw = open('bash_data.tsv', 'w', encoding='UTF-8')
-    #fww = open('bash_err.tsv', 'w', encoding='UTF-8')
     i = 1
     path = 'C:\\Users\\zu_ann\\Documents\\Linguistics\\bak_vk_corpus'
     for root, dirs, files in os.walk(path):
@@ -20,9 +19,9 @@ def select_dialogs():
                 dt = {}
                 for d in data:
                     for key in d:
-                        if key == 'posts': #находим сами посты
+                        if key == 'posts': 
                             posts = d[key]
-                            for num in sorted(posts): #смотрим каждый пост
+                            for num in sorted(posts):
                                 post = posts[num]
                                 try:
                                     date_time = post['date']
@@ -37,10 +36,8 @@ def select_dialogs():
                                         date_time = comment['date']
                                         text = comment['text']
                                         dt[date_time] = text
-                                    #fww.write(str(post) + '\n')
                 sort_dialogs(dt,i,fw)
     fw.close()
-    #fww.close()
 
 def sort_dialogs(dt,i,fw):
     for date_time in sorted(dt):

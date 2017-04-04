@@ -1,1 +1,1 @@
-# Bashkir-Chat-bot
+# Bashkir-Chatbot

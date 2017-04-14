@@ -45,15 +45,15 @@ def select_dialogs():
     fw_q.close()
     fw_q.close()
 
-def sort_comments(dt,i,fw_q,fw_a):
+def sort_comments(dt, i, fw_q, fw_a):
     comm_sort = []
     for date_time in sorted(dt):
-        comm_sort.append(date_time + '\t' + dt[date_time])
-    for k in range(0,len(comm_sort)-1):
-        fw_q.write(str(i) + '\t' + clean_dialogs(comm_sort[k]) + '\n')
+        comm_sort.append(date_time + '\t' + clean_dialogs(dt[date_time]))
+    for k in range(0, len(comm_sort) - 1):
+        fw_q.write(str(i) + '\t' + comm_sort[k] + '\n')
         i += 1
     for k in range(1, len(comm_sort)):
-        fw_a.write(str(i) + '\t' + clean_dialogs(comm_sort[k]) + '\n')
+        fw_a.write(str(i) + '\t' + comm_sort[k] + '\n')
         i += 1
     print(i)
 

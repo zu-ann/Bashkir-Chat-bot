@@ -43,7 +43,7 @@ def select_dialogs():
                                     text = post['text']
                                     split_posts(clean_dialogs(text), date_time_p, i, fw_q, fw_a)
     fw_q.close()
-    fw_q.close()
+    fw_a.close()
 
 def sort_comments(dt, i, fw_q, fw_a):
     comm_sort = []

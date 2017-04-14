@@ -70,7 +70,12 @@ def clean_dialogs(text):
     return text
 
 def split_posts(i,text, date_time_p,fw_q,fw_a):
-    sentences = text.split('.' or '!' or '?')
+    eos = re.compile('([\.!?]+)')
+    res = eos.split(text)
+    sentences = []
+    for i in range(1, len(res), 2):
+        res[i - 1] += res[i]
+        sentences.append(res[i - 1])
     questions = ''
     answers = ''
     if len(sentences) % 2 == 0:

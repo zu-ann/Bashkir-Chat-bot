@@ -289,7 +289,7 @@ def decode_for_bot(sentence):
       if data_utils.EOS_ID in outputs:
         outputs = outputs[:outputs.index(data_utils.EOS_ID)]
       # Print out French sentence corresponding to outputs.
-      answer = " ".join([tf.compat.as_str(rev_fr_vocab[output]) for output in outputs]
+      answer = " ".join([tf.compat.as_str(rev_fr_vocab[output]) for output in outputs])
       return answer
 
 def self_test():

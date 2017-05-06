@@ -7,9 +7,10 @@ bot = telebot.TeleBot(conf.TOKEN, threaded=False)
 def send_welcome(message):
     bot.send_message(message.chat.id, "Здравствуйте! Это бот на башкирском.")
 
-@bot.message_handler(content_types=['text'])
+@bot.message_handler(func=lambda message: True, content_types=['text'])
 def send_sample_answers(message):
     text = message.text
+    answer = 0
     f1 = open('Sample_answers.json','r',encoding = 'UTF-8')
     f2 = open('regex.json','r',encoding = 'UTF-8')
     sample_answers = json.load(f1)
@@ -39,10 +40,11 @@ def send_sample_answers(message):
                         sample_answers[lst].append('Хәйерле төн! (Доброй ночи)')
                         print('Хәйерле төн! (Доброй ночи)')
                 bot.send_message(message.chat.id, random.choice(sample_answers[lst]))
-
-@bot.message_handler(func=lambda message: True, content_types=['text'])
-def send_answer_by_seq2seq(message):
-   bot.send_message(message.chat.id, translate.decode_for_bot(message.text))
-
+                answer = 1
+    if answer == 0:
+        print('use send_answer_by_seq2seq')
+        bot.send_message(message.chat.id, translate.decode_for_bot(message.text))
+    
+              
 if __name__ == '__main__':
     bot.polling(none_stop=True)

@@ -56,8 +56,8 @@ tf.app.flags.DEFINE_integer("size", 1024, "Size of each model layer.")
 tf.app.flags.DEFINE_integer("num_layers", 3, "Number of layers in the model.")
 tf.app.flags.DEFINE_integer("en_vocab_size", 40000, "English vocabulary size.")
 tf.app.flags.DEFINE_integer("fr_vocab_size", 40000, "French vocabulary size.")
-tf.app.flags.DEFINE_string("data_dir", "/Bashkort_chatbot", "Data directory")
-tf.app.flags.DEFINE_string("train_dir", "/Bashkort_chatbot", "Training directory.")
+tf.app.flags.DEFINE_string("data_dir", "/home/asl29112/Bashkort_chatbot", "Data directory")
+tf.app.flags.DEFINE_string("train_dir", "/home/asl29112/Bashkort_chatbot", "Training directory.")
 tf.app.flags.DEFINE_integer("max_train_data_size", 0,
                             "Limit on the size of training data (0: no limit).")
 tf.app.flags.DEFINE_integer("steps_per_checkpoint", 200,
@@ -256,9 +256,8 @@ def decode():
       sys.stdout.flush()
       sentence = sys.stdin.readline()
       
-def start():
-  with tf.Session() as sess:
-    # Create model and load parameters.
+def start(sess):
+   # Create model and load parameters.
     model = create_model(sess, True)
     model.batch_size = 1  # We decode one sentence at a time.
     print('created model')
@@ -270,9 +269,9 @@ def start():
     en_vocab, _ = data_utils.initialize_vocabulary(en_vocab_path)
     _, rev_fr_vocab = data_utils.initialize_vocabulary(fr_vocab_path)
     print('read vocabulary')
-    return sess, model, enc_vocab, rev_dec_vocab
+    return sess, model, en_vocab, rev_fr_vocab
 
-def decode_for_bot(sess, model, enc_vocab, rev_dec_vocab, sentence):
+def decode_for_bot(sess, model, en_vocab, rev_fr_vocab, sentence):
     while sentence:
       # Get token-ids for the input sentence.
       token_ids = data_utils.sentence_to_token_ids(tf.compat.as_bytes(sentence), en_vocab)

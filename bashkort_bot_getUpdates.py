@@ -1,7 +1,10 @@
 import telebot, re, conf, json, random, time, translate
 
+sess, model, enc_vocab, rev_dec_vocab = translate.start()
+print('created sess')
 
 bot = telebot.TeleBot(conf.TOKEN, threaded=False)
+print('ready')
 
 @bot.message_handler(commands=['start', 'help'])
 def send_welcome(message):
@@ -15,6 +18,8 @@ def send_sample_answers(message):
     f2 = open('regex.json','r',encoding = 'UTF-8')
     sample_answers = json.load(f1)
     regex = json.load(f2)
+    f1.close()
+    f2.close()
     for lst in regex:
         for elem in regex[lst]:
             res = re.search(elem,text)
@@ -43,7 +48,7 @@ def send_sample_answers(message):
                 answer = 1
     if answer == 0:
         print('use send_answer_by_seq2seq')
-        bot.send_message(message.chat.id, translate.decode_for_bot(message.text))
+        bot.send_message(message.chat.id, translate.decode_for_bot(sess, model, enc_vocab, rev_dec_vocab,message.text))
     
               
 if __name__ == '__main__':

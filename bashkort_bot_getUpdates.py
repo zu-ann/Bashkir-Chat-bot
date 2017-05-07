@@ -1,7 +1,10 @@
 import telebot, re, conf, json, random, time, translate
+import tensorflow as tf
 
-sess, model, enc_vocab, rev_dec_vocab = translate.start()
+sess = tf.Session()
+sess, model, en_vocab, rev_fr_vocab = translate.start(sess)
 print('created sess')
+regUNK = re.compile('_UNK')
 
 bot = telebot.TeleBot(conf.TOKEN, threaded=False)
 print('ready')
@@ -48,7 +51,9 @@ def send_sample_answers(message):
                 answer = 1
     if answer == 0:
         print('use send_answer_by_seq2seq')
-        bot.send_message(message.chat.id, translate.decode_for_bot(sess, model, enc_vocab, rev_dec_vocab,message.text))
+        reply = translate.decode_for_bot(sess, model, en_vocab, rev_fr_vocab, text)
+        reply = regUNK.sub('Ғәфү итегеҙ, мин аңламайым.',reply) 
+        bot.send_message(message.chat.id, reply)
     
               
 if __name__ == '__main__':

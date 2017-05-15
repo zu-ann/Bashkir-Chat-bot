@@ -17,4 +17,4 @@ for root, dirs, files in os.walk(path):
             a = t.search(str(data))
             if a:
                 print(fl)
-fw.close()
+fw.close() 

@@ -1,19 +1,17 @@
 # -*- coding: utf-8 -*-
 import flask, telebot, re, conf, json, random, time, translate
 
-import tensorflow as tf
+from TF_session import answer_by_seq2seq
 
 WEBHOOK_URL_BASE = "https://{}:{}".format(conf.WEBHOOK_HOST, conf.WEBHOOK_PORT)
 WEBHOOK_URL_PATH = "/{}/".format(conf.TOKEN)
-
-regUNK = re.compile('_UNK')
 
 bot = telebot.TeleBot(conf.TOKEN, threaded=False)
 print("created bot")
 
 # удаляем предыдущие вебхуки, если они были
 bot.remove_webhook()
-time.sleep(2)
+time.sleep(0.5)
 # ставим новый вебхук = Слышь, если кто мне напишет, стукни сюда — url
 bot.set_webhook(url=WEBHOOK_URL_BASE + WEBHOOK_URL_PATH, certificate=open(conf.WEBHOOK_SSL_CERT, 'r'))
 print("set webhook")
@@ -73,13 +71,7 @@ def send_sample_answers(message):
                 bot.send_message(message.chat.id, random.choice(sample_answers[lst]))
                 answer = 1
     if answer == 0:
-        print('use send_answer_by_seq2seq')
-        with tf.Session() as sess:
-            sess, model, en_vocab, rev_fr_vocab = translate.start(sess)
-            print("created sess")
-            reply = translate.decode_for_bot(sess, model, en_vocab, rev_fr_vocab, text)
-            reply = regUNK.sub('Ғәфү итегеҙ, мин аңламайым.',reply)
-            bot.send_message(message.chat.id, reply)
+        bot.send_message(message.chat.id, answer_by_seq2seq(text))
 
 # пустая главная страничка для проверки
 @app.route('/', methods=['GET', 'HEAD'])

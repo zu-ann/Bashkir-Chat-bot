@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import flask, telebot, re, conf, json, random, time, translate
 
-from TF_session import answer_by_seq2seq
+import TF_session
 
 WEBHOOK_URL_BASE = "https://{}:{}".format(conf.WEBHOOK_HOST, conf.WEBHOOK_PORT)
 WEBHOOK_URL_PATH = "/{}/".format(conf.TOKEN)
@@ -23,7 +23,6 @@ def send_welcome(message):
     print("started send_welcome")
     bot.send_message(message.chat.id, "Здравствуйте! Это бот на башкирском.")
 
-
 def read_files():
     f1 = open('Sample_answers.json', 'r', encoding='UTF-8')
     f2 = open('Regex.json', 'r', encoding='UTF-8')
@@ -38,6 +37,8 @@ def read_files():
     f3.close()
     return sample_answers, regex
 
+greeting = 0
+
 @bot.message_handler(func=lambda message: True, content_types=['text'])
 def send_sample_answers(message):
     print("started send_sample_answers")
@@ -48,30 +49,31 @@ def send_sample_answers(message):
         for elem in regex[lst]:
             res = re.search(elem, text)
             if res:
-                if not lst.endswith('greeting') and not lst.endswith('goodbye'):
-                    lst += '_answer'
-                elif lst == 'formal_greeting':
-                    hour = int(time.strftime('%H', time.gmtime(message.date))) + 3
-                    if 4 <= hour < 12:
-                        print(hour)
-                        sample_answers[lst].append('Хәйерле иртә! (доброе утро)')
-                        print('Хәйерле иртә! (доброе утро)')
-                    if 12 <= hour <= 16:
-                        print(hour)
-                        sample_answers[lst].append('Хәйерле көн! (добрый день)')
-                        print('Хәйерле көн! (добрый день)')
-                    if 16 < hour <= 22:
-                        print(hour)
-                        sample_answers[lst].append('Хәйерле кис! (добрый вечер)')
-                        print('Хәйерле кис! (добрый вечер)')
-                    if hour > 22 or hour < 4:
-                        print(hour)
-                        sample_answers[lst].append('Хәйерле төн! (Доброй ночи)')
-                        print('Хәйерле төн! (Доброй ночи)')
+                global greeting
+                if greeting == 0:
+                    greeting = 1
+                    print(greeting)
+                    if not lst.endswith('greeting') and not lst.endswith('goodbye'):
+                        lst += '_answer'
+                    elif lst.endswith('greeting'):
+                        if lst == 'formal_greeting':
+                            hour = int(time.strftime('%H', time.gmtime(message.date))) + 3
+                            if 4 <= hour < 12:
+                                sample_answers[lst].append('Хәйерле иртә! (доброе утро)')
+                                print('Хәйерле иртә! (доброе утро)')
+                            if 12 <= hour <= 16:
+                                sample_answers[lst].append('Хәйерле көн! (добрый день)')
+                                print('Хәйерле көн! (добрый день)')
+                            if 16 < hour <= 22:
+                                sample_answers[lst].append('Хәйерле кис! (добрый вечер)')
+                                print('Хәйерле кис! (добрый вечер)')
+                            if hour > 22 or hour < 4:
+                                sample_answers[lst].append('Хәйерле төн! (Доброй ночи)')
+                                print('Хәйерле төн! (Доброй ночи)')
                 bot.send_message(message.chat.id, random.choice(sample_answers[lst]))
                 answer = 1
     if answer == 0:
-        bot.send_message(message.chat.id, answer_by_seq2seq(text))
+        bot.send_message(message.chat.id, TF_session.answer_by_seq2seq(text))
 
 # пустая главная страничка для проверки
 @app.route('/', methods=['GET', 'HEAD'])

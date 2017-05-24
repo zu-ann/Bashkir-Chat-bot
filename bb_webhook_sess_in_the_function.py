@@ -64,16 +64,16 @@ def send_sample_answers(message):
                     if lst == 'formal_greeting':
                         hour = int(time.strftime('%H', time.gmtime(message.date))) + 3
                         if 4 <= hour < 12:
-                           sample_answers[lst].append('Хәйерле иртә! (доброе утро)')
+                           sample_answers[lst].append('Хәйерле иртә!')
                            print('Хәйерле иртә! (доброе утро)')
                         if 12 <= hour <= 16:
-                           sample_answers[lst].append('Хәйерле көн! (добрый день)')
+                           sample_answers[lst].append('Хәйерле көн!')
                            print('Хәйерле көн! (добрый день)')
                         if 16 < hour <= 22:
-                           sample_answers[lst].append('Хәйерле кис! (добрый вечер)')
+                           sample_answers[lst].append('Хәйерле кис!')
                            print('Хәйерле кис! (добрый вечер)')
                         if hour > 22 or hour < 4:
-                           sample_answers[lst].append('Хәйерле төн! (Доброй ночи)')
+                           sample_answers[lst].append('Хәйерле төн!')
                            print('Хәйерле төн! (Доброй ночи)')
                 if not lst.endswith('greeting') and not lst.endswith('goodbye'):
                     lst += '_answer'

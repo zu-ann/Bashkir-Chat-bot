@@ -8,10 +8,8 @@ WEBHOOK_URL_PATH = "/{}/".format(conf.TOKEN)
 bot = telebot.TeleBot(conf.TOKEN, threaded=False)
 print("created bot")
 
-# удаляем предыдущие вебхуки, если они были
 bot.remove_webhook()
 time.sleep(0.5)
-# ставим новый вебхук = Слышь, если кто мне напишет, стукни сюда — url
 bot.set_webhook(url=WEBHOOK_URL_BASE + WEBHOOK_URL_PATH, certificate=open(conf.WEBHOOK_SSL_CERT, 'r'))
 print("set webhook")
 
@@ -84,13 +82,10 @@ def send_sample_answers(message):
     if answer == 0:
         bot.send_message(message.chat.id, TF_session.answer_by_seq2seq(text))
 
-# пустая главная страничка для проверки
 @app.route('/', methods=['GET', 'HEAD'])
 def index():
     return 'OK!'
 
-
-# обрабатываем вызовы вебхука = функция, которая запускается, когда к нам постучался телеграм
 @app.route(WEBHOOK_URL_PATH, methods=['POST'])
 def webhook():
     if flask.request.headers.get('content-type') == 'application/json':
@@ -100,7 +95,6 @@ def webhook():
         return ''
     else:
         flask.abort(403)
-
 
 app.run(host=conf.WEBHOOK_HOST,
         port=conf.WEBHOOK_PORT,

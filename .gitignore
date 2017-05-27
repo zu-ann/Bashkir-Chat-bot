@@ -1,8 +1,5 @@
-BUILD
-*.md
-bashkort_bot_getUpdates.py
-bashkort_bot_pythonanywhere.py
-collecting_comments.py
-final.py
-prog.py
-search.py
+conf.py
+*.pem
+Offensive_words.json
+/.idea
+logs.txt

@@ -55,7 +55,6 @@ def create_model(session, forward_only):
         forward_only=forward_only,
         dtype=dtype)
     ckpt = tf.train.get_checkpoint_state(train_dir)
-    print(ckpt)
     if ckpt and tf.gfile.Exists(ckpt.model_checkpoint_path):
         print("Reading model parameters from %s" % ckpt.model_checkpoint_path)
         model.saver.restore(session, ckpt.model_checkpoint_path)

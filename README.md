@@ -27,6 +27,6 @@ This repository contains files for implementing the Telegram bot @Aralashyu_bot.
 * Sample_answers.json - the dictionary with predefined responses for the listed types of phrases.
 * Offensive_words.json - the list with regular expressions for searching for offensive words. It is not presented here because of the ethical norms.
 
-* phrases.py constains the phrases used with commands.
+* phrases.py contains the phrases used with commands.
 
 ! The Tensorflow version should be 0.11.0 (branch r0.11 https://github.com/tensorflow/tensorflow/tree/r0.11)!

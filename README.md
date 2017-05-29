@@ -3,10 +3,10 @@ This repository contains files for implementing the Telegram bot @Aralashyu_bot.
 
 * collect_comments.py is used for converting the data from http://web-corpora.net/wsgi3/minorlangs/download into 4 files for training and testing the model:
 
-    train.en - the first phrases (questions) from the pairs question-answer, is used for training
-    train.fr - the second phrases (answers) from the pairs question-answer, is used for training
-    dev.en - the first phrases (questions) from the pairs question-answer, is used for testing
-    dev.fr - the second phrases (answers) from the pairs question-answer, is used for testing 
+   + train.en - the first phrases (questions) from the pairs question-answer, is used for training
+   + train.fr - the second phrases (answers) from the pairs question-answer, is used for training
+   + dev.en - the first phrases (questions) from the pairs question-answer, is used for testing
+   + dev.fr - the second phrases (answers) from the pairs question-answer, is used for testing 
 
 * translate.py, seq2seq_model.py, data_utils.py are used for training the model. See https://habrahabr.ru/post/317732/. 
 

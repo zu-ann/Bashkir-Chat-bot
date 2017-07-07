@@ -25,12 +25,11 @@ import numpy as np
 from six.moves import xrange  # pylint: disable=redefined-builtin
 import tensorflow as tf
 
-from tensorflow.models.rnn.translate import data_utils
+import data_utils
 
 
 class Seq2SeqModel(object):
   """Sequence-to-sequence model with attention and for multiple buckets.
-
   This class implements a multi-layer recurrent neural network as encoder,
   and an attention-based decoder. This is the same as the model described in
   this paper: http://arxiv.org/abs/1412.7449 - please look there for details,
@@ -58,7 +57,6 @@ class Seq2SeqModel(object):
                forward_only=False,
                dtype=tf.float32):
     """Create the model.
-
     Args:
       source_vocab_size: size of the source vocabulary.
       target_vocab_size: size of the target vocabulary.
@@ -190,7 +188,6 @@ class Seq2SeqModel(object):
   def step(self, session, encoder_inputs, decoder_inputs, target_weights,
            bucket_id, forward_only):
     """Run a step of the model feeding the given inputs.
-
     Args:
       session: tensorflow session to use.
       encoder_inputs: list of numpy int vectors to feed as encoder inputs.
@@ -198,11 +195,9 @@ class Seq2SeqModel(object):
       target_weights: list of numpy float vectors to feed as target weights.
       bucket_id: which bucket of the model to use.
       forward_only: whether to do the backward step or only forward.
-
     Returns:
       A triple consisting of gradient norm (or None if we did not do backward),
       average perplexity, and the outputs.
-
     Raises:
       ValueError: if length of encoder_inputs, decoder_inputs, or
         target_weights disagrees with bucket size for the specified bucket_id.
@@ -249,16 +244,13 @@ class Seq2SeqModel(object):
 
   def get_batch(self, data, bucket_id):
     """Get a random batch of data from the specified bucket, prepare for step.
-
     To feed data in step(..) it must be a list of batch-major vectors, while
     data here contains single length-major cases. So the main logic of this
     function is to re-index data cases to be in the proper format for feeding.
-
     Args:
       data: a tuple of size len(self.buckets) in which each element contains
         lists of pairs of input and output data that we use to create a batch.
       bucket_id: integer, which bucket to get the batch for.
-
     Returns:
       The triple (encoder_inputs, decoder_inputs, target_weights) for
       the constructed batch that has the proper format to call step(...) later.
